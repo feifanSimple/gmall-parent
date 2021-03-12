@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.atguigu.gmall.activity.mapper.ActivityInfoMapper">
+
+    <select id="selectExistSkuIdList" resultType="long">
+        select
+        sku.sku_id
+        from activity_info info
+        inner join activity_sku sku on sku.activity_id = info.id
+        <where>
+            <if test="skuIdList != null">
+                and sku.sku_id in
+                <foreach collection="skuIdList" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and now() between info.start_time and info.end_time
+        </where>
+
+    </select>
+
+</mapper>
